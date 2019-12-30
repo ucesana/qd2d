@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Input Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+    JsMockito.Integration.QUnit();
+    JsHamcrest.Integration.QUnit();
+
+    module("qd.VelocityTracker");
+
+    test("default constructor", function () {
+        var x, y, velocityTracker;
+
+        velocityTracker = new qd.VelocityTracker();
+
+        assertThat(velocityTracker, not(equalTo(null)));
+        assertThat(velocityTracker.initialX, equalTo(0));
+        assertThat(velocityTracker.initialY, equalTo(0));
+        assertThat(velocityTracker.vx, equalTo(0));
+        assertThat(velocityTracker.vy, equalTo(0));
+    });
+
+    test("constructor", function () {
+        var x, y, velocityTracker;
+
+        x = 10;
+        y = 10;
+
+        velocityTracker = new qd.VelocityTracker(x, y);
+
+        assertThat(velocityTracker, not(equalTo(null)));
+        assertThat(velocityTracker.initialX, equalTo(x));
+        assertThat(velocityTracker.initialY, equalTo(y));
+        assertThat(velocityTracker.vx, equalTo(0));
+        assertThat(velocityTracker.vy, equalTo(0));
+    });
+
+    test("track", function () {
+        var xi, yi, xf, yf, velocityTracker;
+
+        xi = 0;
+        yi = 0;
+        xf = 10;
+        yf = 10;
+
+        velocityTracker = new qd.VelocityTracker(xi, yi);
+
+        velocityTracker.track(xf, yf);
+
+        assertThat(velocityTracker.vx, equalTo(xf - xi));
+        assertThat(velocityTracker.vy, equalTo(yf - yi));
+        assertThat(velocityTracker.initialX, equalTo(xf));
+        assertThat(velocityTracker.initialY, equalTo(yf));
+    });
+
+    test("start", function () {
+        var xi, yi, velocityTracker;
+
+        xi = 10;
+        yi = 10;
+
+        velocityTracker = new qd.VelocityTracker();
+
+        velocityTracker.start(xi, yi);
+
+        assertThat(velocityTracker.vx, equalTo(0));
+        assertThat(velocityTracker.vy, equalTo(0));
+        assertThat(velocityTracker.initialX, equalTo(xi));
+        assertThat(velocityTracker.initialY, equalTo(yi));
+    });
+
+    test("start (no args)", function () {
+        var velocityTracker;
+
+        velocityTracker = new qd.VelocityTracker();
+
+        velocityTracker.start();
+
+        assertThat(velocityTracker.vx, equalTo(0));
+        assertThat(velocityTracker.vy, equalTo(0));
+        assertThat(velocityTracker.initialX, equalTo(0));
+        assertThat(velocityTracker.initialY, equalTo(0));
+    });
+
+    module("qd.Mouse");
+
+    test("default constructor", function () {
+        var mouse = new qd.Mouse();
+        assertThat(mouse, not(equalTo(null)));
+        assertThat(mouse.x, equalTo(0));
+        assertThat(mouse.y, equalTo(0));
+    });
+
+
+    test("capture()", function( ) {
+        var container = $("<div></div>").attr("id", "container"),
+            event,
+            $doc = $(document),
+            offsetLeft = null,
+            offsetTop = null;
+
+        $("#test-div").append(container);
+
+        container = document.getElementById("container");
+        offsetLeft = container.offsetLeft;
+        offsetTop = container.offsetTop;
+
+        var mouse = new qd.Mouse(container);
+
+        // trigger event
+        event = $.Event("mousemove");
+        event.pageX = offsetLeft;
+        event.pageY = offsetTop;
+        $(container).trigger(event);
+
+        // TODO: Investigate why trigger doesn't execute event
+
+        assertThat(mouse.x, equalTo(0));
+        assertThat(mouse.y, equalTo(0));
+
+        $("#test-div").children().remove();
+    });
+
+</script>
+
+<div id="test-div"><!-- Make sure to restore the state of this element after every test! --></div>
+</body>
+</html>

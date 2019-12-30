@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Physics Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+    JsMockito.Integration.QUnit();
+    JsHamcrest.Integration.QUnit();
+
+    module("qd.Physics");
+</script>
+
+<div id="test-div"><!-- Make sure to restore the state of this element after every test! --></div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+    JsMockito.Integration.QUnit();
+    JsHamcrest.Integration.QUnit();
+
+    function cleanup () {
+        var testContainer = document.getElementById("test-container"),
+            test = document.getElementById("test");
+
+        if (testContainer == null) {
+            testContainer = document.createElement("div");
+            testContainer.id = "test-container";
+            document.body.appendChild(testContainer);
+        }
+
+        if (test) {
+            testContainer.removeChild(test);
+        }
+
+        test = document.createElement("div");
+        test.id = "test";
+        testContainer.appendChild(test);
+    }
+
+    module("qd.Element");
+
+    test("qd.Element.find select by id", function () {
+        var testElem = qd.Element.find("#test");
+
+        assertThat(testElem, not(equalTo(null)));
+        assertThat(testElem.get(0), not(equalTo(null)));
+        assertThat(testElem.id(), equalTo("test"));
+    });
+
+    test("qd.Element.append", function () {
+        var testElem = qd.Element.find("#test"),
+            bar = qd.Element.create("div").id("bar");
+
+        testElem.append(bar);
+
+        assertThat(testElem, not(equalTo(null)));
+        assertThat(testElem, instanceOf(qd.Element));
+        assertThat(testElem.get(), not(equalTo(null)));
+        assertThat(testElem.get(), instanceOf(HTMLElement));
+        assertThat(document.getElementById("bar"), not(equalTo(null)));
+
+        cleanup();
+    });
+</script>
+
+<div id="test-container">
+    <div id="test"><!-- Make sure to restore the state of this element after every test! --></div>
+</div>
+</body>
+</html>

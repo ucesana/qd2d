@@ -1,0 +1,100 @@
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #bbb;
+    margin: 0px 0px 12px 0px;
+}
+
+#container {
+
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+
+    /*position: relative;*/
+}
+
+canvas#canvas {
+    z-index: 2;
+    position: absolute;
+    /*box-shadow: 10px 10px 5px #888888;*/
+}
+
+canvas#grid {
+    z-index: 1;
+    position: absolute;
+    background-color: #fff;
+}
+
+div#bar {
+    z-index: 4;
+    background-color: white;
+    /*box-shadow: 10px 10px 5px #888888;*/
+    /*margin-bottom: 12px;*/
+    padding: 0px 12px 12px 12px;
+    min-height: 82px;
+}
+
+div#bar * {
+    display: inline;
+}
+
+#tools {
+    background-color: white;
+}
+
+header#logo {
+    float: left;
+    height: 70px;
+    margin: 12px 12px 12px 0px;
+}
+
+header#logo img {
+    width: 70px;
+    height: 70px;
+}
+
+fieldset {
+    border: 1px solid #00aad4;
+    margin-top: 6px;
+}
+
+fieldset, legend {
+    font-size: 10px;
+    font-family: "Arial";
+    color: #00aad4;
+}
+
+input[type=text] {
+    width: 50px;
+    margin-left: 6px;
+    /*margin-right: 6px;*/
+    padding: 0px;
+}
+
+input[type=radio] {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+button, input {
+    color: #00aad4;
+}
+
+button {
+    height: 18px;
+}
+
+button.btnColour {
+    background-color: #000000;
+    width: 50px;
+    height: 15px;
+    padding: 0px;
+}
+
+div.divider {
+    margin: 0px 6px 0px 6px;
+    border-left:1px solid #00aad4;
+}

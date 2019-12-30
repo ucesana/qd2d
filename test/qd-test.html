@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <script type="text/javascript">
+	    JsMockito.Integration.QUnit();
+        JsHamcrest.Integration.QUnit();
+
+        module("qd");
+
+        test("REGEX.YES_NO matches 'yes' in all case combinations", function () {
+            assertThat(qd.REGEX.YES_NO.test("yes"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("YES"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("Yes"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("yEs"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("yeS"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("YeS"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("yES"), is(true));
+        });
+
+        test("REGEX.YES_NO matches 'no' in all case combinations", function () {
+            assertThat(qd.REGEX.YES_NO.test("no"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("NO"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("No"), is(true));
+            assertThat(qd.REGEX.YES_NO.test("nO"), is(true));
+        });
+
+        test("REGEX.YES_NO match fails with leading characters or space", function () {
+            assertThat(qd.REGEX.YES_NO.test("Ayes"), is(false));
+            assertThat(qd.REGEX.YES_NO.test("Ano"), is(false));
+            assertThat(qd.REGEX.YES_NO.test(" yes"), is(false));
+            assertThat(qd.REGEX.YES_NO.test(" no"), is(false));
+
+        });
+
+        test("REGEX.YES_NO match fails with trailing characters or space", function () {
+            assertThat(qd.REGEX.YES_NO.test("yesA"), is(false));
+            assertThat(qd.REGEX.YES_NO.test("noA"), is(false));
+            assertThat(qd.REGEX.YES_NO.test("yes "), is(false));
+            assertThat(qd.REGEX.YES_NO.test("no "), is(false));
+        });
+
+        test("REGEX.BOOLEAN matches 'true' in all case combinations", function () {
+            assertThat(qd.REGEX.BOOLEAN.test("true"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("tRue"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("trUe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("truE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("TRue"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("tRUe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("trUE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("TRUe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("tRUE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("TRUE"), is(true));
+        });
+
+        test("REGEX.BOOLEAN matches 'false' in all case combinations", function () {
+            assertThat(qd.REGEX.BOOLEAN.test("false"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("fAlse"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("faLse"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("falSe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("falsE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("FAlse"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("fALse"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("faLSe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("falSE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("FALse"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("fALSe"), is(true));
+            assertThat(qd.REGEX.BOOLEAN.test("faLSE"), is(true));
+
+            assertThat(qd.REGEX.BOOLEAN.test("FALSE"), is(true));
+        });
+
+        test("qd.REGEX.NUMBER matches at least one integer", function () {
+            assertThat(qd.REGEX.NUMBER.test("0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("1"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("2"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("3"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("4"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("5"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("6"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("7"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("8"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("9"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("10"), is (true));
+        });
+
+        test("qd.REGEX.NUMBER matches decimal notation", function () {
+            assertThat(qd.REGEX.NUMBER.test("0.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("1.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("2.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("3.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("4.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("5.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("6.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("7.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("8.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("9.0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test("10.0"), is (true));
+        });
+
+        test("qd.REGEX.NUMBER matches decimal notation with missing first digit", function () {
+            assertThat(qd.REGEX.NUMBER.test(".0"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".1"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".2"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".3"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".4"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".5"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".6"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".7"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".8"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".9"), is (true));
+            assertThat(qd.REGEX.NUMBER.test(".10"), is (true));
+        });
+
+        test("qd.REGEX.NUMBER fails match on missing digit after decimal", function () {
+            assertThat(qd.REGEX.NUMBER.test("0."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("1."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("2."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("3."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("4."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("5."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("6."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("7."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("8."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("9."), is (false));
+            assertThat(qd.REGEX.NUMBER.test("10."), is (false));
+        });
+
+        test("qd.REGEX.NUMBER fails match on empty string", function () {
+            assertThat(qd.REGEX.NUMBER.test(""), is (false));
+        });
+
+        test("qd.REGEX.NUMBER fails match on whitespace", function () {
+            assertThat(qd.REGEX.NUMBER.test(" "), is (false));
+            assertThat(qd.REGEX.NUMBER.test("\t"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("\n"), is (false));
+        });
+
+        test("qd.REGEX.NUMBER fails match on alphanumeric characters", function () {
+            assertThat(qd.REGEX.NUMBER.test("A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("AB"), is (false));
+
+            assertThat(qd.REGEX.NUMBER.test("A.A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("AB.A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("A.AB"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("AB.AB"), is (false));
+
+            assertThat(qd.REGEX.NUMBER.test(".A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test(".AB"), is (false));
+        });
+
+        test("qd.REGEX.NUMBER fails match on mix of numbers and alphanumeric", function () {
+            assertThat(qd.REGEX.NUMBER.test("1A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test(".1A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("1.A"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("1A."), is (false));
+
+            assertThat(qd.REGEX.NUMBER.test("A1"), is (false));
+            assertThat(qd.REGEX.NUMBER.test(".A1"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("A.1"), is (false));
+            assertThat(qd.REGEX.NUMBER.test("A1."), is (false));
+        });
+
+        test("qd.REGEX.TEXT matches alphanumeric string", function () {
+            assertThat(qd.REGEX.TEXT.test("A"), is(true));
+            assertThat(qd.REGEX.TEXT.test("A1"), is(true));
+            assertThat(qd.REGEX.TEXT.test("1A"), is(true));
+        });
+
+        test("qd.REGEX.TEXT matches empty string", function () {
+            assertThat(qd.REGEX.TEXT.test(""), is(true));
+        });
+
+        test("qd.REGEX.CSS_COLOUR matches hex code", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("#ABC123"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("#DEF456"), is(true));
+        });
+
+        test("qd.REGEX.CSS_COLOUR fails match on hex code 5 or less digits", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("#BC123"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("#C123"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("#123"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("#23"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("#3"), is(false));
+        });
+
+        test("qd.REGEX.CSS_COLOUR fails match on hex code with missing #", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("ABC123"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("DEF456"), is(false));
+        });
+
+        test("qd.REGEX.CSS_COLOUR matches rgb", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0,0,0)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(10,10,10)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(255,255,255)"), is(true));
+
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(0,0,0)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(10,10,10)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(255,255,255)"), is(true));
+        });
+
+        test("qd.REGEX.CSS_COLOUR matches rgb with spaces", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0, 0, 0)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(10, 10, 10)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(255, 255, 255)"), is(true));
+
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(0, 0, 0)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(10, 10, 10)"), is(true));
+            assertThat(qd.REGEX.CSS_COLOUR.test("RGB(255, 255, 255)"), is(true));
+        });
+
+        test("qd.REGEX.CSS_COLOUR fails match on rgb with missing digits", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0,,)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0,0,)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(,0,0)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(,,0)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(,,)"), is(false));
+        });
+
+        test("qd.REGEX.CSS_COLOUR fails match on rgb with missing commas", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0 0 0)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0, 0 0)"), is(false));
+            assertThat(qd.REGEX.CSS_COLOUR.test("rgb(0 0, 0)"), is(false));
+        });
+
+        test("qd.REGEX.CSS_COLOUR matches text", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test("blue"), is(true));
+        });
+
+        test("qd.REGEX.CSS_COLOUR fails on empty string", function () {
+            assertThat(qd.REGEX.CSS_COLOUR.test(""), is(false));
+        });
+
+        test("qd.REGEX.CSS_SIZE matches px", function () {
+            assertThat(qd.REGEX.CSS_SIZE.test("1px"), is(true));
+            assertThat(qd.REGEX.CSS_SIZE.test("1.1px"), is(true));
+            assertThat(qd.REGEX.CSS_SIZE.test(".1px"), is(true));
+        });
+
+        test("qd.REGEX.CSS_SIZE matches em", function () {
+            assertThat(qd.REGEX.CSS_SIZE.test("1em"), is(true));
+            assertThat(qd.REGEX.CSS_SIZE.test("1.1em"), is(true));
+            assertThat(qd.REGEX.CSS_SIZE.test(".1em"), is(true));
+        });
+
+        test("qd.REGEX.CSS_SIZE fails match on empty string", function () {
+            assertThat(qd.REGEX.CSS_SIZE.test(""), is(false));
+        });
+
+        test("qd.REGEX.COMMA_SEPARATED_INTEGER_LIST succeeds on single digit", function () {
+            assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test("1"), is(true));
+        });
+
+        test("qd.REGEX.COMMA_SEPARATED_INTEGER_LIST succeeds on two digits", function () {
+            assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test("1, 2"), is(true));
+        });
+
+        test("qd.REGEX.COMMA_SEPARATED_INTEGER_LIST succeeds on three digits", function () {
+            assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test("1, 2, 3"), is(true));
+        });
+
+        test("qd.REGEX.COMMA_SEPARATED_INTEGER_LIST succeeds on n digits", function () {
+            var i,
+                n = 100,
+                list = "1";
+
+            expect(n);
+
+            assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test(list), is(true));
+
+            for (i = 1; i < n; i += 1) {
+                list += ", " + (i + 1);
+                assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test(list), is(true));
+            }
+        });
+
+        test("qd.REGEX.COMMA_SEPARATED_INTEGER_LIST fails on empty string", function () {
+            assertThat(qd.REGEX.COMMA_SEPARATED_INTEGER_LIST.test(""), is(false));
+        });
+
+        test("qd.Tuple.create with empty arguments return array of length zero", function () {
+            var tuple = qd.Tuple.create();
+
+            assertThat(tuple.length, equalTo(0));
+        });
+
+        test("qd.Tuple.create with 1 argument", function () {
+            var arg1 = 1,
+                tuple = qd.Tuple.create(arg1);
+
+            assertThat(tuple[0], equalTo(arg1));
+            assertThat(tuple.length, equalTo(1));
+        });
+
+        test("qd.Tuple.create with 2 arguments", function () {
+            var arg1 = 1,
+                arg2 = 2,
+                tuple = qd.Tuple.create(arg1, arg2);
+
+            assertThat(tuple[0], equalTo(arg1));
+            assertThat(tuple[1], equalTo(arg2));
+            assertThat(tuple.length, equalTo(2));
+        });
+
+        test("qd.Tuple.create with 3 arguments", function () {
+            var arg1 = 1,
+                arg2 = 2,
+                arg3 = 3,
+                tuple = qd.Tuple.create(arg1, arg2, arg3);
+
+            assertThat(tuple[0], equalTo(arg1));
+            assertThat(tuple[1], equalTo(arg2));
+            assertThat(tuple[2], equalTo(arg3));
+            assertThat(tuple.length, equalTo(3));
+        });
+
+        test("qd.Tuple.create with 10 arguments", function () {
+            var i,
+                totalArgs = 10,
+                tuple = qd.Tuple.create(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            for (i = 0; i < totalArgs; i += 1) {
+                assertThat(tuple[i], equalTo(i));
+            }
+
+            assertThat(tuple.length, equalTo(totalArgs));
+
+        });
+
+        test("qd.Tuple.clone", function () {
+            var i,
+                tuple = qd.Tuple.create(0, 1, 2),
+                clone;
+
+            clone = qd.Tuple.clone(tuple);
+
+            assertThat(clone, not(equalTo(null)));
+            assertThat(clone.length, equalTo(tuple.length));
+
+            for (i = 0; i < tuple.length; i += 1) {
+                assertThat(clone[i], equalTo(tuple[i]));
+            }
+        });
+
+        test("qd.Tuple.clone returns undefined for null argument", function () {
+            var clone;
+
+            clone = qd.Tuple.clone(null);
+
+            assertThat(clone, equalTo(undefined));
+        });
+
+        test("qd.Tuple.clone returns undefined for undefined argument", function () {
+            var clone;
+
+            clone = qd.Tuple.clone(undefined);
+
+            assertThat(clone, equalTo(undefined));
+        });
+
+        test("qd.Tuple.copy", function () {
+            var tuple = qd.Tuple.create(1, 2, 3),
+                copy = qd.Tuple.create(0, 0, 0);
+
+            copy = qd.Tuple.copy(copy, tuple);
+
+            assertThat(copy, not(equalTo(null)));
+            assertThat(copy.length, equalTo(tuple.length));
+
+            for (i = 0; i < tuple.length; i += 1) {
+                assertThat(copy[i], equalTo(tuple[i]));
+            }
+        });
+
+        test("qd.Tuple.copy throws error on tuple length mismatch", function () {
+            var tuple = qd.Tuple.create(1, 2, 3),
+                copy = qd.Tuple.create(),
+                error;
+
+            try {
+                copy = qd.Tuple.copy(copy, tuple);
+            } catch (e) {
+                error = e;
+            }
+
+            assertThat(error, not(equalTo(null)));
+        });
+
+        test("qd.Tuple.copy returns original tuple when tuple to copy is null", function () {
+            var copy = qd.Tuple.create();
+
+            copy = qd.Tuple.copy(copy, null);
+
+            assertThat(copy, equalTo(copy));
+        });
+
+        test("qd.Tuple.copy returns original tuple when tuple to copy is undefined", function () {
+            var copy = qd.Tuple.create();
+
+            copy = qd.Tuple.copy(copy, undefined);
+
+            assertThat(copy, equalTo(copy));
+        });
+
+        test("qd.Tuple.copy throws error when out tuple is null", function () {
+            var tuple = qd.Tuple.create(1, 2, 3),
+                copy = null,
+                error;
+
+            try {
+                copy = qd.Tuple.copy(copy, tuple);
+            } catch (e) {
+                error = e;
+            }
+
+            assertThat(error, not(equalTo(null)));
+        });
+
+        test("qd.Tuple.copy throws error when out tuple is undefined", function () {
+            var tuple = qd.Tuple.create(1, 2, 3),
+                    copy = null,
+                    error;
+
+            try {
+                copy = qd.Tuple.copy(copy, tuple);
+            } catch (e) {
+                error = e;
+            }
+
+            assertThat(error, not(equalTo(null)));
+        });
+
+        test("qd.Tuple.equal succeeds between the tuple and itself", function () {
+            var tuple = qd.Tuple.create(1, 2, 3),
+                isEqual;
+
+            isEqual = qd.Tuple.equal(tuple, tuple);
+
+            assertThat(isEqual, is(true));
+        });
+
+        test("qd.Tuple.equal succeeds between equivalent tuples", function () {
+            var tuple1 = qd.Tuple.create(1, 2, 3),
+                tuple2 = qd.Tuple.create(1, 2, 3),
+                isEqual;
+
+            isEqual = qd.Tuple.equal(tuple1, tuple2);
+
+            assertThat(isEqual, is(true));
+        });
+
+        test("qd.Tuple.equal fails between different tuples", function () {
+            var tuple1 = qd.Tuple.create(1, 2, 3),
+                tuple2 = qd.Tuple.create(3, 2, 1),
+                isEqual;
+
+            isEqual = qd.Tuple.equal(tuple1, tuple2);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("qd.Tuple.equal fails between tuples of different length", function () {
+            var tuple1 = qd.Tuple.create(1, 2, 3),
+                tuple2 = qd.Tuple.create(),
+                isEqual;
+
+            isEqual = qd.Tuple.equal(tuple1, tuple2);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("qd.Tuple.equal fails if first parameter is null", function () {
+            var tuple2 = qd.Tuple.create(1, 2, 3),
+                isEqual;
+
+            isEqual = qd.Tuple.equal(null, tuple2);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("qd.Tuple.equal fails if first parameter is undefined", function () {
+            var tuple2 = qd.Tuple.create(1, 2, 3),
+                    isEqual;
+
+            isEqual = qd.Tuple.equal(null, tuple2);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("qd.Tuple.equal fails if second parameter is null", function () {
+            var tuple1 = qd.Tuple.create(1, 2, 3),
+                    isEqual;
+
+            isEqual = qd.Tuple.equal(tuple1, null);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("qd.Tuple.equal fails if second parameter is undefined", function () {
+            var tuple1 = qd.Tuple.create(1, 2, 3),
+                    isEqual;
+
+            isEqual = qd.Tuple.equal(tuple1, undefined);
+
+            assertThat(isEqual, is(false));
+        });
+
+        test("isNull()", function () {
+            assertThat(qd.isNull(null), equalTo(true));
+            assertThat(qd.isNull(undefined), equalTo(false));
+            assertThat(qd.isNull(1), equalTo(false));
+        });
+
+        test("isNotNull()", function () {
+            assertThat(qd.isNotNull({}), equalTo(true));
+            assertThat(qd.isNotNull(null), equalTo(false));
+            assertThat(qd.isNotNull(undefined), equalTo(true));
+        });
+
+        test("isUndefined()", function () {
+            var defined = {},
+                definedButNull = null;
+            assertThat(qd.isUndefined(undefined), equalTo(true));
+            assertThat(qd.isUndefined(defined), equalTo(false));
+            assertThat(qd.isUndefined(definedButNull), equalTo(false));
+        });
+
+        test("isDefined()", function () {
+            var defined = {},
+                definedButNull = null;
+            assertThat(qd.isDefined(defined), equalTo(true));
+            assertThat(qd.isDefined(undefined), equalTo(false));
+            assertThat(qd.isDefined(definedButNull), equalTo(true));
+        });
+
+        test("isDefinedAndNotNull()", function () {
+            var defined = {},
+                definedButNull = null;
+            assertThat(qd.isDefinedAndNotNull(defined), equalTo(true));
+            assertThat(qd.isDefinedAndNotNull(undefined), equalTo(false));
+            assertThat(qd.isDefinedAndNotNull(definedButNull), equalTo(false));
+        });
+
+        test("isUndefinedOrNull()", function () {
+            var defined = {},
+                definedButNull = null;
+            assertThat(qd.isUndefinedOrNull(defined), equalTo(false));
+            assertThat(qd.isUndefinedOrNull(undefined), equalTo(true));
+            assertThat(qd.isUndefinedOrNull(definedButNull), equalTo(true));
+        });
+
+        test("qd.isTruthy() succeeds with true boolean type", function () {
+            assertThat(qd.isTruthy(true), equalTo(true));
+        });
+
+        test("qd.isTruthy() succeeds with true with non-zero number", function () {
+            assertThat(qd.isTruthy(1), equalTo(true));
+        });
+
+        test("qd.isTruthy() succeeds with true with lowercase string 'true'", function () {
+            assertThat(qd.isTruthy("true"), equalTo(true));
+        });
+
+        test("qd.isTruthy() succeeds with true with uppercase string 'TRUE'", function () {
+            assertThat(qd.isTruthy("TRUE"), equalTo(true));
+        });
+
+        test("qd.isTruthy() fails with false boolean type", function () {
+            assertThat(qd.isTruthy(false), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with true with zero number", function () {
+            assertThat(qd.isTruthy(0), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with true with negative number", function () {
+            assertThat(qd.isTruthy(-1), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with true with lowercase string 'false'", function () {
+            assertThat(qd.isTruthy("false"), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with true with uppercase string 'FALSE'", function () {
+            assertThat(qd.isTruthy("FALSE"), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with null", function () {
+            assertThat(qd.isTruthy(null), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with undefined", function () {
+            assertThat(qd.isTruthy(undefined), equalTo(false));
+        });
+
+        test("qd.isTruthy() fails with unexpected type", function () {
+            var nonTruthyType = [];
+
+            assertThat(qd.isTruthy(nonTruthyType), equalTo(false));
+        });
+
+        test("qd.isFalsey() fails with true boolean type", function () {
+            assertThat(qd.isFalsey(true), equalTo(false));
+        });
+
+        test("qd.isFalsey() fails with true with non-zero number", function () {
+            assertThat(qd.isFalsey(1), equalTo(false));
+        });
+
+        test("qd.isFalsey() fails with true with lowercase string 'true'", function () {
+            assertThat(qd.isFalsey("true"), equalTo(false));
+        });
+
+        test("qd.isFalsey() fails with true with uppercase string 'TRUE'", function () {
+            assertThat(qd.isFalsey("TRUE"), equalTo(false));
+        });
+
+        test("qd.isFalsey() succeeds with false boolean type", function () {
+            assertThat(qd.isFalsey(false), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with zero number", function () {
+            assertThat(qd.isFalsey(0), equalTo(true));
+        });
+
+        test("qd.isTruthy() succeeds with true with negative number", function () {
+            assertThat(qd.isFalsey(-1), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with true with lowercase string 'false'", function () {
+            assertThat(qd.isFalsey("false"), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with true with uppercase string 'FALSE'", function () {
+            assertThat(qd.isFalsey("FALSE"), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with null", function () {
+            assertThat(qd.isFalsey(null), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with undefined", function () {
+            assertThat(qd.isFalsey(undefined), equalTo(true));
+        });
+
+        test("qd.isFalsey() succeeds with unexpected type", function () {
+            var nonFalseyType = [];
+
+            assertThat(qd.isFalsey(nonFalseyType), equalTo(true));
+        });
+
+        test("merge()", function () {
+            var settings = { a: "a", b: "b", c: "c"},
+                options = {b: "new b"},
+                result = qd.mergeProperties(settings, options);
+
+            assertThat(result, not(equalTo(undefined)));
+            assertThat(result, not(equalTo(null)));
+            assertThat(result.a, equalTo(settings.a));
+            assertThat(result.b, equalTo(options.b));
+            assertThat(result.c, equalTo(settings.c));
+        });
+
+        test("each()", function () {
+            var items = [0, 1, 2, 3],
+                callback = mockFunction(),
+                result;
+
+            result = qd.forEach(items, callback);
+
+            assertThat(result, equivalentArray(items));
+            verify(callback, times(1))(0, 0);
+            verify(callback, times(1))(1, 1);
+            verify(callback, times(1))(2, 2);
+            verify(callback, times(1))(3, 3);
+        });
+
+        test("eachProperty()", function () {
+            var object = {
+                prop0: 0,
+                prop1: 1,
+                prop2: 2
+            },
+            callback = mockFunction(),
+            result;
+
+            result = qd.eachProperty(object, callback);
+
+            assertThat(result, equalTo(object));
+            verify(callback, times(1))("prop0", 0);
+            verify(callback, times(1))("prop1", 1);
+            verify(callback, times(1))("prop2", 2);
+        });
+
+        test("loop()", 0, function () {
+            var callback = mockFunction();
+
+            qd.loop(3, callback);
+
+            verify(callback, times(1))(0);
+            verify(callback, times(1))(1);
+            verify(callback, times(1))(2);
+        });
+
+        test("min()", function () {
+            var values = [2, 5, 1, 0, 2],
+                comparator = function (a, b) {
+                    return a - b;
+                },
+                result;
+
+            result = qd.min(values, comparator);
+
+            assertThat(result, equalTo(0));
+        });
+
+        test("max()", function () {
+            var values = [1, 3, 5, 0, 1],
+                comparator = function (a, b) {
+                    return a - b;
+                },
+                result;
+
+            result = qd.max(values, comparator);
+
+            assertThat(result, equalTo(5));
+        });
+
+        test("every() succeeds when predicate succeeds on every value", function () {
+            var array = [1, 2, 3],
+                allGreaterThan0;
+
+            allGreaterThan0 = qd.every(array, function (value) {
+                return value > 0;
+            });
+
+            assertThat(allGreaterThan0, equalTo(true));
+        });
+
+        test("every() fails when predicate fails at least once", function () {
+            var array = [1, 2, 3],
+                    allGreaterThan1;
+
+            allGreaterThan1 = qd.every(array, function (value) {
+                return value > 1;
+            });
+
+            assertThat(allGreaterThan1, equalTo(false));
+        });
+
+        test("every() fails when predicate fails on every element", function () {
+            var array = [1, 2, 3],
+                    allGreaterThan10;
+
+            allGreaterThan10 = qd.every(array, function (value) {
+                return value > 10;
+            });
+
+            assertThat(allGreaterThan10, equalTo(false));
+        });
+
+
+        test("collect()", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return value > 3;
+                },
+                result;
+
+            result = qd.collect(values, predicate);
+
+            assertThat(result, equivalentArray([4, 5]));
+        });
+
+        test("collect() - returns empty array", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return false;
+                },
+                result;
+
+            result = qd.collect(values, predicate);
+
+            assertThat(result, equivalentArray([]));
+        });
+
+        test("filter()", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return value > 3;
+                },
+                result;
+
+            result = qd.filter(values, predicate);
+
+            assertThat(result, equivalentArray([1, 2, 3]));
+        });
+
+        test("filter() - returns original array", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return false;
+                },
+                result;
+
+            result = qd.filter(values, predicate);
+
+            assertThat(result, equivalentArray(values));
+        });
+
+        test("find()", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return value == 4;
+                },
+                result;
+
+            result = qd.find(values, predicate);
+
+            assertThat(result, equalTo(4));
+        });
+
+        test("find() - returns null", function () {
+            var values = [1, 2, 3, 4, 5],
+                predicate = function (value) {
+                    return false;
+                },
+                result;
+
+            result = qd.find(values, predicate);
+
+            assertThat(result, equalTo(null));
+        });
+
+        test("flatten()", function () {
+            var values = [1, [2, [3, 4]], 5],
+                result;
+
+            result = qd.flatten(values);
+
+            assertThat(result, equivalentArray([1, 2, 3, 4, 5]));
+        });
+
+        test("qd.Args - test true with 1 arg", function () {
+            var args = null,
+                fn = function (arg1, arg2) { args = new qd.Args(arguments) },
+                qdInstance = new qd.Args(),
+                result = null;
+
+            fn(qdInstance);
+            result = args.matches(qd.Args);
+
+            assertThat(result, equalTo(true));
+
+        });
+
+        test("qd.Args - test true with 2 args", function () {
+            var args = null,
+                    fn = function (arg1, arg2) { args = new qd.Args(arguments) },
+                    qdInstance1 = new qd.Args(),
+                    qdInstance2 = new Number(0),
+                    result = null;
+
+            fn(qdInstance1, qdInstance2);
+            result = args.matches(qd.Args, Number);
+
+            assertThat(result, equalTo(true));
+
+        });
+
+        test("qd.Args - test false with 1 arg", function () {
+            var args = null,
+                    fn = function (arg1, arg2) { args = new qd.Args(arguments) },
+                    qdInstance = new qd.Args(),
+                    result = null;
+
+            fn(qdInstance);
+            result = args.matches(Number);
+
+            assertThat(result, equalTo(false));
+
+        });
+
+        test("qd.Args - test false with 2 args", function () {
+            var args = null,
+                    fn = function (arg1, arg2) { args = new qd.Args(arguments) },
+                    qdInstance1 = new qd.Args(),
+                    qdInstance2 = new qd.Args(),
+                    result = null;
+
+            fn(qdInstance1, qdInstance2);
+            result = args.matches(qd.Args, Number);
+
+            assertThat(result, equalTo(false));
+
+        });
+
+        test("qd.Validator - creates simple regex validator", function () {
+            var validator = qd.validator(/abc/);
+
+            assertThat(validator, is(not(null)));
+        });
+
+        test("qd.Validator - simple regex validator succeeds with valid value", function () {
+            var validator = qd.validator(/abc/);
+
+            assertThat(validator.validate("abc"), is(true));
+        });
+
+        test("qd.Validator - simple regex validator converts valid number to string", function () {
+            var validator = qd.validator(/123/);
+
+            assertThat(validator.validate(123), is(true));
+        });
+
+        test("qd.Validator - simple regex validator fails with invalid value", function () {
+            var validator = qd.validator(/abc/);
+
+            assertThat(validator.validate("123"), is(false));
+        });
+
+        test("qd.Validator - creates a ranged validator", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator, is(not(null)));
+        });
+
+        test("qd.Validator - ranged validator succeeds on lower bound", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate(0), is(true));
+        });
+
+        test("qd.Validator - ranged validator succeeds on upper bound", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate(10), is(true));
+        });
+
+        test("qd.Validator - ranged validator succeeds midway between lower and upper bounds", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate(5), is(true));
+        });
+
+        test("qd.Validator - ranged validator fails on value below lower bound", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate(-1), is(false));
+        });
+
+        test("qd.Validator - ranged validator fails on value above upper bound", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate(11), is(false));
+        });
+
+        test("qd.Validator - ranged validator fails on non-numerical value", function () {
+            var validator = qd.validator(0, 10);
+
+            assertThat(validator.validate("abc"), is(false));
+        });
+
+        test("qd.Validator - creates an value set validator", function () {
+            var validator = qd.validator([0, 1, 2]);
+
+            assertThat(validator, is(not(null)));
+        });
+
+        test("qd.Validator - value set validator succeeds on all valid values", function () {
+            var valueSet = [0, 1, 2],
+                validator = qd.validator(valueSet),
+                i;
+
+            expect(valueSet.length);
+
+            for (i = 0; i < valueSet.length; i += 1) {
+                assertThat(validator.validate(valueSet[i]), is(true));
+            }
+        });
+
+        test("qd.Validator - value set validator fails on invalid value", function () {
+            var validator = qd.validator([0, 1, 2]);
+
+            assertThat(validator.validate(-1), is(false));
+        });
+
+        test("qd.Validator - creates value set validator from arbitrary arguments", function () {
+            var validator = qd.validator("a", 1);
+
+            assertThat(validator, is(not(null)));
+        });
+
+        test("qd.Validator - arbitrary argument value set validator succeeds with valid values", function () {
+            var validator = qd.validator("a", 1);
+
+            assertThat(validator.validate("a"), is(true));
+            assertThat(validator.validate(1), is(true));
+        });
+
+        test("qd.Validator - arbitrary argument value set validator fails with invalid values", function () {
+            var validator = qd.validator("a", 1);
+
+            assertThat(validator.validate("b"), is(false));
+            assertThat(validator.validate(2), is(false));
+        });
+
+        test("qd.Validator - creates an custom validator", function () {
+            var validator = qd.validator(function (value) {
+                return value === "abc";
+            });
+
+            assertThat(validator, is(not(null)));
+        });
+
+        test("qd.Validator - custom validator succeeds on valid value", function () {
+            var validator = qd.validator(function (value) {
+                return value === "abc";
+            });
+
+            qd.debug(validator)
+
+            assertThat(validator.validate("abc"), is(true));
+        });
+
+        test("qd.Validator - custom validator fails on invalid value", function () {
+            var validator = qd.validator(function (value) {
+                return value === "abc";
+            });
+
+            assertThat(validator.validate(123), is(false));
+        });
+
+        test("EXPERIMENTAL: qd.Tuple2", function () {
+            var Tuple2 = (typeof Float64Array !== 'undefined') ? Float64Array : (
+                    (typeof Float32Array !== 'undefined') ? Float32Array : Array);
+
+            Tuple2.create = function (x, y) {
+                var tuple = new Tuple2(2);
+                tuple[0] = x;
+                tuple[1] = y;
+                return tuple;
+            };
+
+            Tuple2.prototype.size = function () {
+                return this.length;
+            };
+
+            Tuple2.prototype.set = function (x, y) {
+                this[0] = x;
+                this[1] = y;
+                return this;
+            };
+
+            Tuple2.prototype.add = function (a) {
+                this[0] += a[0];
+                this[1] += a[1];
+                return this;
+            };
+
+            Tuple2.prototype.subtract = function (a) {
+                this[0] -= a[0];
+                this[1] -= a[1];
+                return this;
+            };
+
+            Tuple2.prototype.scale = function (s) {
+                this[0] *= s;
+                this[1] *= s;
+                return this;
+            };
+
+            Tuple2.prototype.inverseScale = function (s) {
+                this[0] /= s;
+                this[1] /= s;
+                return this;
+            };
+
+            var t1 = Tuple2.create(10, 20),
+                t2 = Tuple2.create(5, 5);
+
+            assertThat(t1[0], equalTo(10))
+            assertThat(t1[1], equalTo(20))
+
+            var result = t1.add(t2)
+
+            assertThat(t1[0], equalTo(15))
+            assertThat(t1[1], equalTo(25))
+
+        });
+    </script>
+
+    <div id="test"><!-- Make sure to restore the state of this element after every test! --></div>
+</body>
+</html>

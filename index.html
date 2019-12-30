@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+
+    <title>Quick & Dirty Demo</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+
+<div id="container" class="qd-resizable">
+    <canvas id="grid" class="qd-resizable"></canvas>
+    <canvas id="canvas" class="qd-resizable"></canvas>
+</div>
+
+<script src="js/lib/jwerty.js"></script>
+<script src="js/qd.js"></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        (function (qd) {
+            var editor = new qd.Editor(
+                new qd.Engine({
+                    fps: 30,
+                    showFps: false,
+                    mouseContainer: "canvas",
+                    enableCommands: false,
+                    log: false,
+                    debug: false,
+                    warn: false
+                })
+            );
+        }(qd.rogue()));
+    };
+</script>
+
+</body>
+</html>

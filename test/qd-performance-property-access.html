@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+    JsMockito.Integration.QUnit();
+    JsHamcrest.Integration.QUnit();
+
+    var properties = {
+        prop: 10,
+        func: function () {
+            return 10;
+        }
+    };
+
+    var Class = function () {
+        var closureProp = 10,
+            closureFunc = function () { return 10; };
+
+        this.closurePropAccessor = function () {
+            return closureProp;
+        };
+
+        this.closureFuncAccessor = function () {
+            closureFunc();
+        };
+
+        this.privilegedProp = 10;
+        this.privilegedFunc = function () {
+            return 10;
+        };
+    };
+
+    Class.STATIC_PROP = 10;
+    Class.STATIC_FUNC = function () {
+        return 10;
+    };
+
+    Class.prototype.prop = 10;
+
+    Class.prototype.func = function () {
+        return 10;
+    };
+
+    var instance = new Class();
+
+    var tuple = qd.Tuple.create(10);
+
+    function elapsedTimeSeconds (start) {
+        return (Date.now() - start) / 1000;
+    }
+
+    test("Property and Function access Performance Comparison", function () {
+        var perfResults = {
+                propertiesPropTime: 0,
+                propertiesFuncTime: 0,
+
+                classClosurePropAccessorTime: 0,
+                classClosureFuncAccessorTime: 0,
+
+                classPrivilegedPropTime: 0,
+                classPrivilegedFuncTime: 0,
+
+                classStaticPropTime: 0,
+                classStaticFuncTime: 0,
+
+                classPrototypePropTime: 0,
+                classPrototypeFuncTime: 0,
+
+                typedArrayTime: 0
+            },
+            i,
+            n = 1000000000,
+            start,
+            testStart,
+            result;
+
+        expect(0);
+
+        testStart = Date.now();
+
+        // Properties prop access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = properties.prop;
+        }
+
+        perfResults.propertiesPropTime = elapsedTimeSeconds(start);
+
+        // Properties func access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = properties.func;
+        }
+
+        perfResults.propertiesFuncTime = elapsedTimeSeconds(start);
+
+        // Class closure prop access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = instance.closurePropAccessor();
+        }
+
+        perfResults.classClosurePropAccessorTime = elapsedTimeSeconds(start);
+
+        // Class closure func access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = instance.closureFuncAccessor();
+        }
+
+        perfResults.classClosureFuncAccessorTime = elapsedTimeSeconds(start);
+
+        // Class privileged prop access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = instance.prop;
+        }
+
+        perfResults.classPrivilegedPropTime = elapsedTimeSeconds(start);
+
+        // Class privileged func access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = instance.func();
+        }
+
+        perfResults.classPrivilegedFuncTime = elapsedTimeSeconds(start);
+
+        // Class static prop access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = Class.STATIC_PROP;
+        }
+
+        perfResults.classStaticPropTime = elapsedTimeSeconds(start);
+
+        // Class static func access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = Class.STATIC_FUNC();
+        }
+
+        perfResults.classStaticFuncTime = elapsedTimeSeconds(start);
+
+        // Class prototype prop access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            instance.prop;
+        }
+
+        perfResults.classPrototypePropTime = elapsedTimeSeconds(start);
+
+        // Class prototype func access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = instance.func();
+        }
+
+        perfResults.classPrototypeFuncTime = elapsedTimeSeconds(start);
+
+        // Typed array access time
+        start = Date.now();
+
+        for (i = 0; i < n; i += 1) {
+            result = tuple[0];
+        }
+
+        perfResults.typedArrayTime = elapsedTimeSeconds(start);
+
+        qd.debug("Total Test Time: " + elapsedTimeSeconds(testStart));
+
+        qd.debug(perfResults);
+    });
+</script>
+
+<div id="test"><!-- Make sure to restore the state of this element after every test! --></div>
+</body>
+</html>

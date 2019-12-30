@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Quick and Dirty Math Test</title>
+
+    <link rel="stylesheet" href="../css/lib/qunit-1.11.0.css">
+
+    <script src="../js/lib/qunit-1.11.0.js"></script>
+    <script src="../js/lib/jshamcrest-0.7.0.min.js"></script>
+    <script src="../js/lib/jsmockito-1.0.4.min.js"></script>
+
+    <script src="../js/build/qd.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <script type="text/javascript">
+        JsMockito.Integration.QUnit();
+        JsHamcrest.Integration.QUnit();
+
+        test("fastSin", function () {
+            var iterations = 20000000,
+                    i,
+                    timestamp,
+                    elapsedTime,
+                    x,
+                    degreeRange = 360,
+                    degreeOffset = 0.4;
+
+//                timestamp = Date.now();
+//
+//                for (i = 0; i < iterations; i += 1) {
+//                    x = qd.math.degreesToRadians(i % degreeRange + degreeOffset);
+//                    Math.sin(x);
+//                }
+//
+//                elapsedTime = Date.now() - timestamp;
+//
+//                qd.debug("Math.sin: ", elapsedTime);
+
+            timestamp = Date.now();
+
+            for (i = 0; i < iterations; i += 1) {
+                x = qd.math.toRadians(i % degreeRange + degreeOffset);
+                qd.math.fasterSin(x);
+            }
+
+            elapsedTime = Date.now() - timestamp;
+
+            qd.debug("Math.fastSin: ", elapsedTime);
+            qd.debug("genMisses ", qd.math.fastSin.genMisses);
+            qd.debug("genHits ", qd.math.fastSin.genHits);
+
+        });
+
+        //    module("qd.Point2D");
+    //
+    //    test("default constructor", function () {
+    //        var point = new qd.Point2D();
+    //
+    //        assertThat(point.x, equalTo(0));
+    //        assertThat(point.y, equalTo(0));
+    //    });
+    //
+    //    test("constructor", function () {
+    //        var point = new qd.Point2D(10, 20);
+    //
+    //        assertThat(point.x, equalTo(10));
+    //        assertThat(point.y, equalTo(20));
+    //    });
+    //
+    //    test("point not equal to null", function () {
+    //        var point = new qd.Point2D(10, 20),
+    //                isEqual;
+    //
+    //        isEqual = point.equals(null);
+    //
+    //        assertThat(isEqual, is(not(truth())));
+    //    });
+    //
+    //    test("point not equal to undefined", function () {
+    //        var point = new qd.Point2D(10, 20),
+    //                isEqual;
+    //
+    //        isEqual = point.equals(undefined);
+    //
+    //        assertThat(isEqual, is(not(truth())));
+    //    });
+    //
+    //    test("point equals itself", function () {
+    //        var point = new qd.Point2D(10, 20),
+    //                isEqual;
+    //
+    //        isEqual = point.equals(point);
+    //
+    //        assertThat(isEqual, is(truth()));
+    //    });
+    //
+    //    test("point equals similar point", function () {
+    //        var pointA = new qd.Point2D(10, 20),
+    //                pointB = new qd.Point2D(10, 20),
+    //                isEqual;
+    //
+    //        isEqual = pointA.equals(pointB);
+    //
+    //        assertThat(isEqual, is(truth()));
+    //    });
+    //
+    //    test("point not equal to dissimilar point", function () {
+    //        var pointA = new qd.Point2D(10, 20),
+    //                pointB = new qd.Point2D(200, 100),
+    //                isEqual;
+    //
+    //        isEqual = pointA.equals(pointB);
+    //
+    //        assertThat(isEqual, is(not(truth())));
+    //    });
+    //
+    //    test("displaceBy", function () {
+    //        var point = new qd.Point2D(0, 0),
+    //                dx = 10,
+    //                dy = 20,
+    //                expectedPoint = new qd.Point2D(point.x + dx, point.y + dy),
+    //                actualPoint;
+    //
+    //        point.displaceBy(dx, dy);
+    //
+    //        assertThat(point.x, equalTo(expectedPoint.x));
+    //        assertThat(point.y, equalTo(expectedPoint.y));
+    //    });
+    //
+    //    module("qd.math.intersectLines");
+    //
+    //    test("intersectLines", 0, function() {
+    //        // TODO
+    //    });
+    //
+    //    test("qd.math.lerpPoint2D", function () {
+    //        var pointA = new qd.Point2D(0, 0),
+    //                pointB = new qd.Point2D(10, 10),
+    //                lambda = 0.5,
+    //                lerp;
+    //
+    //        lerp = qd.math.lerpPoint2D(pointA, pointB, lambda);
+    //
+    //        assertThat(lerp, not(nil()));
+    //        assertThat(lerp.x, equalTo(5));
+    //        assertThat(lerp.y, equalTo(5));
+    //    });
+    //
+    //    test("qd.math.lerp", function () {
+    //        var x0 = 0,
+    //                x1 = 10,
+    //                lambda = 0.5,
+    //                lerp;
+    //
+    //        lerp = qd.math.lerp(x0, x1, lambda);
+    //
+    //        assertThat(lerp, equalTo(5));
+    //    });
+    //
+    //    test("qd.math.lerp lambda 0", function () {
+    //        var x0 = 0,
+    //                x1 = 10,
+    //                lambda = 0,
+    //                lerp;
+    //
+    //        lerp = qd.math.lerp(x0, x1, lambda);
+    //
+    //        assertThat(lerp, equalTo(x0));
+    //    });
+    //
+    //    test("qd.math.lerp lambda 10", function () {
+    //        var x0 = 0,
+    //                x1 = 10,
+    //                lambda = 1,
+    //                lerp;
+    //
+    //        lerp = qd.math.lerp(x0, x1, lambda);
+    //
+    //        assertThat(lerp, equalTo(10));
+    //    });
+    //
+    //    test("qd.math.perpendicularOfPointOnLine", 0, function () {
+    //        // TODO
+    //    });
+    //
+    //    test("qd.math.perpendicularOfPointOnLineByLerping", 0, function () {
+    //        // TODO
+    //    });
+
+//            test("qd.math.BinarySearchTree - insert", function () {
+//                var ipTree = new qd.BinarySearchTree(),
+//                    keyResults = [],
+//                    valueResults = [];
+//
+//                ipTree.insert(4, "test4");
+//                ipTree.insert(1, "test1");
+//                ipTree.insert(10, "test10");
+//                ipTree.insert(2, "test2");
+//                ipTree.insert(3, "test3");
+//                ipTree.insert(9, "test9");
+//                ipTree.insert(8, "test8");
+//                ipTree.insert(5, "test5");
+//                ipTree.insert(7, "test7");
+//                ipTree.insert(6, "test6");
+//
+//
+//                ipTree.traverse(function (key, value) {
+//                    keyResults.push(key);
+//                    valueResults.push(value);
+//                });
+//
+//                assertThat(keyResults, equivalentArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+//                assertThat(valueResults, equivalentArray(["test1", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9", "test10"]));
+//
+//            });
+//
+//            test("qd.math.BinarySearchTree - search", function () {
+//                var ipTree = new qd.BinarySearchTree(),
+//                     result = null;
+//
+//                ipTree.insert(4, "test4");
+//                ipTree.insert(1, "test1");
+//                ipTree.insert(10, "test10");
+//                ipTree.insert(2, "test2");
+//                ipTree.insert(3, "test3");
+//                ipTree.insert(9, "test9");
+//                ipTree.insert(8, "test8");
+//                ipTree.insert(5, "test5");
+//                ipTree.insert(7, "test7");
+//                ipTree.insert(6, "test6");
+//
+//                result = ipTree.search(3);
+//
+//                assertThat(result, equalTo("test3"));
+//            });
+//
+//            test("qd.math.BinarySearchTree - min, max", function () {
+//                var ipTree = new qd.BinarySearchTree(),
+//                    minResult = null,
+//                    maxResult = null;
+//
+//                ipTree.insert(4, "test4");
+//                ipTree.insert(1, "test1");
+//                ipTree.insert(10, "test10");
+//                ipTree.insert(2, "test2");
+//                ipTree.insert(3, "test3");
+//                ipTree.insert(9, "test9");
+//                ipTree.insert(8, "test8");
+//                ipTree.insert(5, "test5");
+//                ipTree.insert(7, "test7");
+//                ipTree.insert(6, "test6");
+//
+//                minResult = ipTree.min();
+//                maxResult = ipTree.max();
+//
+//                assertThat(minResult, equalTo(1));
+//                assertThat(maxResult, equalTo(10));
+//            });
+//
+//            test("qd.math.BinarySearchTree - successor, predecessor", function () {
+//                var ipTree = new qd.BinarySearchTree(),
+//                        successorResult = null,
+//                        predescessorResult = null;
+//
+//                ipTree.insert(4, "test4");
+//                ipTree.insert(1, "test1");
+//                ipTree.insert(10, "test10");
+//                ipTree.insert(2, "test2");
+//                ipTree.insert(3, "test3");
+//                ipTree.insert(9, "test9");
+//                ipTree.insert(8, "test8");
+//                ipTree.insert(5, "test5");
+//                ipTree.insert(7, "test7");
+//                ipTree.insert(6, "test6");
+//
+//                successorResult = ipTree.successor();
+//                predescessorResult = ipTree.predecessor();
+//
+//                assertThat(successorResult, equalTo(5));
+//                assertThat(predescessorResult, equalTo(3));
+//            });
+//
+//            test("qd.math.BinarySearchTree - remove", function () {
+//                var ipTree = new qd.BinarySearchTree(),
+//                        result = null,
+//                        keyResults = [];
+//
+//                ipTree.insert(4, "test4");
+//                ipTree.insert(1, "test1");
+//                ipTree.insert(10, "test10");
+//                ipTree.insert(2, "test2");
+//                ipTree.insert(3, "test3");
+//                ipTree.insert(9, "test9");
+//                ipTree.insert(8, "test8");
+//                ipTree.insert(5, "test5");
+//                ipTree.insert(7, "test7");
+//                ipTree.insert(6, "test6");
+//
+//                result = ipTree.remove(4);
+//
+//                assertThat(result, equalTo(true));
+//
+//                ipTree.traverse(function (key, value) {
+//                    keyResults.push(key);
+//                });
+//
+//                assertThat(keyResults, equivalentArray([1, 2, 4, 5, 6, 7, 8, 9, 10]));
+//
+//            });
+//
+//
+////            test("qd.Matrix - size", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = null;
+////
+////                result = matrix.size();
+////
+////                assertThat(result, equalTo(9));
+////
+////            });
+////
+////            test("qd.Matrix - identity", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                    result = [];
+////
+////                result = matrix.elements();
+////
+////                assertThat(result, equivalentArray([1, 0, 0, 0, 1, 0, 0, 0, 1]));
+////
+////            });
+////
+////            test("qd.Matrix - set elements", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = [];
+////
+////                matrix.elements(1, 2, 3, 4, 5, 6, 7, 8, 9);
+////                result = matrix.elements();
+////
+////                assertThat(result, equivalentArray([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+////
+////            });
+////
+////            test("qd.Matrix - set partial elements", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = [];
+////
+////                matrix.elements(1, 2, 3);
+////                result = matrix.elements();
+////
+////                assertThat(result, equivalentArray([1, 2, 3, 0, 1, 0, 0, 0, 1]));
+////
+////            });
+////
+////            test("qd.Matrix - set excess elements", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = [];
+////
+////                matrix.elements(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+////                result = matrix.elements();
+////
+////                assertThat(result, equivalentArray([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+////
+////            });
+////
+////            test("qd.Matrix - get element", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = [];
+////
+////                matrix.elements(1, 2, 3, 4, 5, 6, 7, 8, 9);
+////
+////                result = matrix.element(1, 1);
+////                assertThat(result, equalTo(1));
+////
+////                result = matrix.element(1, 2);
+////                assertThat(result, equalTo(2));
+////
+////                result = matrix.element(1, 3);
+////                assertThat(result, equalTo(3));
+////
+////                result = matrix.element(2, 1);
+////                assertThat(result, equalTo(4));
+////
+////                result = matrix.element(2, 2);
+////                assertThat(result, equalTo(5));
+////
+////                result = matrix.element(2, 3);
+////                assertThat(result, equalTo(6));
+////
+////                result = matrix.element(3, 1);
+////                assertThat(result, equalTo(7));
+////
+////                result = matrix.element(3, 2);
+////                assertThat(result, equalTo(8));
+////
+////                result = matrix.element(3, 3);
+////                assertThat(result, equalTo(9));
+////
+////            });
+////
+////            test("qd.Matrix - set element", function () {
+////                var matrix = new qd.Matrix(3, 3),
+////                        result = [];
+////
+////                matrix.elements(1, 2, 3, 4, 5, 6, 7, 8, 9);
+////                matrix.element(1, 1, 9);
+////                matrix.element(1, 2, 8);
+////                matrix.element(1, 3, 7);
+////                matrix.element(2, 1, 6);
+////                matrix.element(2, 2, 5);
+////                matrix.element(2, 3, 4);
+////                matrix.element(3, 1, 3);
+////                matrix.element(3, 2, 2);
+////                matrix.element(3, 3, 1);
+////
+////                result = matrix.elements();
+////
+////                assertThat(result, equivalentArray([9, 8, 7, 6, 5, 4, 3, 2, 1]));
+////
+////            });
+//
+//            test("qd.LinkedList.add - add element", function () {
+//                var list = new qd.LinkedList(),
+//                    result = [];
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.toArray();
+//
+//                assertThat(result, equivalentArray([1, 2, 3]));
+//            });
+//
+//            test("qd.LinkedList.get - get element", function () {
+//                var list = new qd.LinkedList(),
+//                    result = null;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.get(1);
+//
+//                assertThat(result, equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.removeAt - remove 1st element", function () {
+//                var list = new qd.LinkedList(),
+//                        result = [],
+//                        removed = null;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                removed = list.removeAt(0);
+//                result = list.toArray();
+//
+//                assertThat(removed, equalTo(1));
+//                assertThat(result, equivalentArray([2, 3]));
+//                assertThat(list.size(), equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.removeAt - remove 2nd element", function () {
+//                var list = new qd.LinkedList(),
+//                    result = [],
+//                    removed = null;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                removed = list.removeAt(1);
+//                result = list.toArray();
+//
+//                assertThat(removed, equalTo(2));
+//                assertThat(result, equivalentArray([1, 3]));
+//                assertThat(list.size(), equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.removeAt - remove from empty list", function () {
+//                var list = new qd.LinkedList(),
+//                    result = [];
+//
+//                try {
+//                    list.removeAt(0);
+//                } catch (exp) {
+//                    result = exp;
+//                }
+//
+//                assertThat(result, instanceOf(RangeError));
+//                assertThat(list.size(), equalTo(0));
+//            });
+//
+//            test("qd.LinkedList.removeAt - remove missing element", function () {
+//                var list = new qd.LinkedList(),
+//                    result = null;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                try {
+//                    list.removeAt(10);
+//                } catch (exp) {
+//                    result = exp;
+//                }
+//
+//                assertThat(result, instanceOf(Error));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.remove - remove head", function () {
+//                var list = new qd.LinkedList(),
+//                    result,
+//                    a = {},
+//                    b = {},
+//                    c = {};
+//
+//                list.add(a);
+//                list.add(b);
+//                list.add(c);
+//
+////                result = list.remove(function (item) {
+////                    return (item === 1);
+////                });
+//
+//                result = list.remove(a);
+//
+//                assertThat(result, equalTo(a));
+//                assertThat(list.toArray(), equivalentArray([b, c]));
+//                assertThat(list.size(), equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.remove - remove 2nd element", function () {
+//                var list = new qd.LinkedList(),
+//                        result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.remove(2);
+//
+//                assertThat(result, equalTo(2));
+//                assertThat(list.toArray(), equivalentArray([1, 3]));
+//                assertThat(list.size(), equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.remove - remove 3rd element", function () {
+//                var list = new qd.LinkedList(),
+//                        result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.remove(3);
+//
+//                assertThat(result, equalTo(3));
+//                assertThat(list.toArray(), equivalentArray([1, 2]));
+//                assertThat(list.size(), equalTo(2));
+//            });
+//
+//            test("qd.LinkedList.remove - remove missing element", function () {
+//                var list = new qd.LinkedList(),
+//                    result,
+//                    ex;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                try {
+//                    list.remove(10);
+//                } catch (ex) {
+//                    result = ex;
+//                }
+//
+//                assertThat(result, instanceOf(Error));
+//                assertThat(list.toArray(), equivalentArray([1, 2, 3]));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.remove - remove from empty list", function () {
+//                var list = new qd.LinkedList(),
+//                        result;
+//
+//                try {
+//                    list.remove(10);
+//                } catch (ex) {
+//                    result = ex;
+//                }
+//
+//                assertThat(result, instanceOf(Error));
+//                assertThat(list.toArray(), equivalentArray([]));
+//                assertThat(list.size(), equalTo(0));
+//            });
+//
+//            test("qd.LinkedList.find - find 1st element", function () {
+//                var list = new qd.LinkedList(),
+//                    result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.find(1);
+//
+//                assertThat(result, equalTo(1));
+//                assertThat(list.toArray(), equivalentArray([1, 2, 3]));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.find - find 2nd element", function () {
+//                var list = new qd.LinkedList(),
+//                    result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.find(2);
+//
+//                assertThat(result, equalTo(2));
+//                assertThat(list.toArray(), equivalentArray([1, 2, 3]));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.find - find 3rd element", function () {
+//                var list = new qd.LinkedList(),
+//                    result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                result = list.find(3);
+//
+//                assertThat(result, equalTo(3));
+//                assertThat(list.toArray(), equivalentArray([1, 2, 3]));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.find - find missing element", function () {
+//                var list = new qd.LinkedList(),
+//                    result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                try {
+//                    list.find(10);
+//                } catch (ex) {
+//                    result = ex;
+//                }
+//
+//                assertThat(result, instanceOf(Error));
+//                assertThat(list.toArray(), equivalentArray([1, 2, 3]));
+//                assertThat(list.size(), equalTo(3));
+//            });
+//
+//            test("qd.LinkedList.find - find element in empty list", function () {
+//                var list = new qd.LinkedList(),
+//                    result;
+//
+//                try {
+//                    list.find(3);
+//                } catch (ex) {
+//                    result = ex;
+//                }
+//
+//                assertThat(result, instanceOf(Error));
+//                assertThat(list.toArray(), equivalentArray([]));
+//                assertThat(list.size(), equalTo(0));
+//            });
+//
+//            test("qd.LinkedList - iterator", function () {
+//                var list = new qd.LinkedList(),
+//                    iter = null,
+//                    result;
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//                iter = list.iterator();
+//
+//                if (iter.hasNext()) {
+//                    result = iter.next();
+//                    assertThat(result, equalTo(1));
+//                }
+//
+//                if (iter.hasNext()) {
+//                    result = iter.next();
+//                    assertThat(result, equalTo(2));
+//                }
+//
+//                if (iter.hasNext()) {
+//                    result = iter.next();
+//                    assertThat(result, equalTo(3));
+//                }
+//
+//                result = iter.hasNext();
+//                assertThat(result, equalTo(false));
+//
+//                try {
+//                    iter.next();
+//                } catch (exp) {
+//                    result = exp;
+//                }
+//                assertThat(result, instanceOf(Error));
+//
+//            });
+//
+//            test("qd.LinkedList - iterator", function () {
+//                var list = new qd.LinkedList(),
+//                    result = [];
+//
+//                list.add(1);
+//                list.add(2);
+//                list.add(3);
+//
+//                qd.iterate(list, function (item, index) {
+//                    result.push(item);
+//                });
+//
+//                assertThat(result, equivalentArray([1, 2, 3]));
+//
+//            });
+//
+//            test("qd.math.addRadians - less than tau", function () {
+//                var angle = 0,
+//                    r = qd.math.QUARTER_TAU,
+//                    dr = r;
+//
+//                angle = qd.math.addRadians(r, dr);
+//
+//                assertThat(angle, equalTo(qd.math.HALF_TAU));
+//            });
+//
+//            test("qd.math.addRadians - greater than tau", function () {
+//                var angle = 0,
+//                        r = qd.math.QUARTER_TAU,
+//                        dr = qd.math.TAU;
+//
+//                angle = qd.math.round(qd.math.addRadians(r, dr), 10);
+//
+//                assertThat(angle, equalTo(qd.math.round(qd.math.QUARTER_TAU, 10)));
+//            });
+//
+//            test("qd.math.addRadians - 10 times greater than tau", function () {
+//                var angle = 0,
+//                        r = -qd.math.QUARTER_TAU,
+//                        dr = 10 * qd.math.TAU;
+//
+//                angle = qd.math.round(qd.math.addRadians(r, dr), 10);
+//
+//                assertThat(angle, equalTo(qd.math.round(qd.math.THREE_QUARTER_TAU, 10)));
+//            });
+//
+//            test("qd.math.addRadians - ten times less than tau", function () {
+//                var angle = 0,
+//                        r = -qd.math.QUARTER_TAU,
+//                        dr = -10 * qd.math.TAU;
+//
+//                angle = qd.math.round(qd.math.addRadians(r, dr), 10);
+//
+//                assertThat(angle, equalTo(qd.math.round(qd.math.THREE_QUARTER_TAU, 10)));
+//            });
+//
+//            test("qd.Tuple", function () {
+//                var tuple = qd.Tuple.create(1, 2, 3);
+//
+//                assertThat(tuple[0], equalTo(1));
+//                assertThat(tuple[1], equalTo(2));
+//                assertThat(tuple[2], equalTo(3));
+//            });
+    </script>
+
+    <div id="test-div"><!-- Make sure to restore the state of this element after every test! --></div>
+</body>
+</html>
