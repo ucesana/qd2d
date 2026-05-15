@@ -409,7 +409,7 @@
 
     qd.Entity.prototype.raise = function () {
         var zOrder,
-            entities = this._layer.entitySet._entities,  // qd.Entity is a friend of qdEntitySet
+            entities = this._layer.entitySet._entities,  // qd.Entity is a friendI  of qdEntitySet
             size = entities.length,
             topZOrder = size - 1;
 

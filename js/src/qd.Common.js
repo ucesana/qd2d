@@ -1,8 +1,7 @@
 /**
  * Quick & Dirty
  *
- * Author: Ulpian Cesana
- */
+ * /
 
 "use strict";
 

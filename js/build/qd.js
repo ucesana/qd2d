@@ -1,8 +1,7 @@
 /**
  * Quick & Dirty
  *
- * Author: Ulpian Cesana
- */
+ * /
 
 "use strict";
 
@@ -4802,6 +4801,7 @@ qd.Set = function (identicator) {
 
     };
 }(qd));
+
 (function (qd) {
 
     qd.Collision = function (physics) {
@@ -12490,7 +12490,7 @@ qd.Spring.prototype.update = function () {
 
     qd.Entity.prototype.raise = function () {
         var zOrder,
-            entities = this._layer.entitySet._entities,  // qd.Entity is a friend of qdEntitySet
+            entities = this._layer.entitySet._entities,  // qd.Entity is a friendI  of qdEntitySet
             size = entities.length,
             topZOrder = size - 1;
 

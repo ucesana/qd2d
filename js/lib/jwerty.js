@@ -7,7 +7,7 @@
  *
  * This code is licensed under the MIT
  * For the full license see: http://keithamus.mit-license.org/
- * For more information see: http://keithamus.github.com/jwerty
+ * For more information see: https://github.com/keithamus/jwerty
  *
  * @author Keith Cirkel ('keithamus') <jwerty@keithcirkel.co.uk>
  * @license http://keithamus.mit-license.org/
