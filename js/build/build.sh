@@ -2,39 +2,47 @@
 
 clear
 
-cd ../src
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SRC_DIR="$SCRIPT_DIR/../src"
+BUILD_DIR="$SCRIPT_DIR"
+DIST_DIR="$SCRIPT_DIR/dist"
+ROOT_DIR="$SCRIPT_DIR/../.."
 
-cat qd.Common.js \
-  math/qd.math.js math/qd.Point2D.js math/qd.Vector2D.js math/qd.Vector3D.js math/qd.Angle.js \
-  collections/*.js \
-  physics/qd.Body.js physics/qd.Collision.js physics/qd.Physics.js physics/qd.BoundingBox.js physics/qd.Cloth.js physics/qd.DynamicSpring.js physics/qd.Kinematics.js physics/qd.Spring.js \
-  graphics/*.js \
-  io/*.js \
-  qd.Element.js \
-  qd.Entity.js \
-  qd.EntitySet.js \
-  qd.Layer.js \
-  qd.World.js \
-  qd.Engine.js \
-  editor/*.js \
-  > ../build/qd.js
+cat \
+  "$SRC_DIR/qd.Common.js" \
+  "$SRC_DIR/math/qd.math.js" \
+  "$SRC_DIR/math/qd.Point2D.js" \
+  "$SRC_DIR/math/qd.Vector2D.js" \
+  "$SRC_DIR/math/qd.Vector3D.js" \
+  "$SRC_DIR/math/qd.Angle.js" \
+  "$SRC_DIR/collections/"*.js \
+  "$SRC_DIR/physics/qd.Body.js" \
+  "$SRC_DIR/physics/qd.Collision.js" \
+  "$SRC_DIR/physics/qd.Physics.js" \
+  "$SRC_DIR/physics/qd.BoundingBox.js" \
+  "$SRC_DIR/physics/qd.Cloth.js" \
+  "$SRC_DIR/physics/qd.DynamicSpring.js" \
+  "$SRC_DIR/physics/qd.Kinematics.js" \
+  "$SRC_DIR/physics/qd.Spring.js" \
+  "$SRC_DIR/graphics/"*.js \
+  "$SRC_DIR/io/"*.js \
+  "$SRC_DIR/qd.Element.js" \
+  "$SRC_DIR/qd.Entity.js" \
+  "$SRC_DIR/qd.EntitySet.js" \
+  "$SRC_DIR/qd.Layer.js" \
+  "$SRC_DIR/qd.World.js" \
+  "$SRC_DIR/qd.Engine.js" \
+  "$SRC_DIR/editor/"*.js \
+  > "$BUILD_DIR/qd.js"
 
-cd ..
-rm -rf dist
-mkdir dist
-mkdir -p dist/js
-mkdir -p dist/js/lib
-mkdir -p dist/css
-mkdir -p dist/images
-cd dist
+rm -rf "$DIST_DIR"
+mkdir -p "$DIST_DIR/js/lib"
+mkdir -p "$DIST_DIR/css"
+mkdir -p "$DIST_DIR/images"
 
-cp ../build/qd.js ./js
-cp ../lib/jwerty.js ./js/lib/
-cp ../../css/style.css ./css/
-cp ../../images/* ./images/
-cp ../../index.html .
-cp ../../qd.ico .
-
-cd ../..
-
-
+cp "$BUILD_DIR/qd.js"          "$DIST_DIR/js/"
+cp "$SCRIPT_DIR/../lib/jwerty.js" "$DIST_DIR/js/lib/"
+cp "$ROOT_DIR/css/style.css"   "$DIST_DIR/css/"
+cp "$ROOT_DIR/images/"*        "$DIST_DIR/images/"
+cp "$ROOT_DIR/index.html"      "$DIST_DIR/"
+cp "$ROOT_DIR/qd.ico"          "$DIST_DIR/"
