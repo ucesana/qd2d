@@ -1,7 +1,7 @@
 # Quick & Dirty 2D
 
 Quick & Dirty 2D is a lightweight physics and graphics framework written in [Vanilla.js](http://vanilla-js.com/), the most powerful and versatile JavaScript
- framework out there. Actually, I lie, I do use a little JQuery.
+ framework out there. Actually, I lie, I do use a little JQuery for keyboard commands.
 
 ## Try it out
 
@@ -14,7 +14,7 @@ sh build.sh
 
 The script will create a `dist` directory and copy all the necessary files, including all images, JavaScript libraries, css, and the main `qd.js` module.
 
-To run the demo, open up `dist/index.html` in your browser or visit the [live demo](http://users.tpg.com.au/ucesana/projects/qd2d/).
+To run the demo, open up `dist/index.html` in your browser or visit the [live demo](https://ucesana.github.io/qd2d/).
 
 ## Why 'Quick & Dirty'?
 
